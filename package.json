@@ -1,0 +1,11 @@
+{
+    "name": "maple",
+    "version": "121918",
+    "main": "main.js",
+    "devDependencies": {
+        "electron": "^3.0.13"
+    },
+    "scripts": {
+        "start": "electron ."
+    }
+}
