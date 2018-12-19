@@ -1,6 +1,6 @@
 {
     "name": "maple",
-    "version": "121918",
+    "version": "12.19.18",
     "main": "main.js",
     "devDependencies": {
         "electron": "^3.0.13"
