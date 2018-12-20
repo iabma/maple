@@ -6,12 +6,21 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const url = require("url");
 
+const operatingSystems = {
+    "darwin": "macOS",
+    "win32": "Windows",
+    "linux": "Linux",
+    "freebsd": "FreeBSD",
+    "sunos": "SunOS"
+};
+const plat = operatingSystems[process.platform];
+
 let main;
 
 function createWindow() {
     main = new BrowserWindow({
         transparent: true,
-        titleBarStyle: "hidden"
+        frame: false
     });
 
     main.loadURL(url.format({
@@ -29,7 +38,7 @@ function createWindow() {
 app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
+    if (plat !== "macOS") {
         app.quit();
     }
 });

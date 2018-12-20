@@ -5,13 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>maple</title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet/less" type="text/css" href="styles.less" />
+        <script src="less.js" type="text/javascript"></script>
     </head>
     <body>
-        <div id="title">maple</div>
-        <h1>Renderer 1</h1>
+        <div class="title-bar">
+            <embed id="close" class="bar-button" src="img/close.svg">
+            <embed id="minimize" class="bar-button" src="img/minimize.svg">
+            <embed id="expand" class="bar-button" src="img/expand.svg">
+            <div class="title">maple</div>
+        </div>
         <script>
-            require("./index.js");
+            require("index.js");
         </script>
     </body>
 </html>

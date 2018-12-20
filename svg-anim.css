@@ -1,0 +1,64 @@
+#polygon {
+  vector-effect: scaling-stroke;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+  stroke-miterlimit: 3;
+  stroke: #fff;
+  stroke-width: 8;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  -webkit-animation: dash 1s linear forwards;
+  -moz-animation: dash 1s linear forwards;
+  animation: dash 1s linear forwards;
+}
+.close {
+  fill: #ff5757;
+}
+.minimize {
+  fill: #ffe357;
+}
+.expand {
+  fill: #57ff7e;
+}
+#close:hover .close-symb {
+  fill: white;
+  transition: .3s;
+}
+#minimize:hover .minimize-symb {
+  fill: white;
+  transition: .3s;
+}
+#expand:hover .expand-symb {
+  fill: white;
+  transition: .3s;
+}
+/* 
+#logo {
+    cursor: pointer;
+}
+
+#logo:hover 
+.st0 {
+    fill: #fff;
+    transition: .2s;
+}
+.st1 {
+    fill: #fff;
+    transition: .2s;
+}
+
+#logo.clickit 
+.st0 {
+    fill: #1b75bb;
+    stroke: #1b75bb;
+}
+.st1 {
+    stroke: none;
+    fill: #fff;
+} */
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+    stroke-width: 0;
+  }
+}
