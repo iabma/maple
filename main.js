@@ -29,7 +29,7 @@ function createWindow() {
         slashes: true
     }));
 
-    //main.webContents.openDevTools();
+    main.webContents.openDevTools();
     main.on("close", () => {
         main = null
     });

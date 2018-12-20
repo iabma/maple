@@ -1,11 +1,20 @@
 <?xml version="1.0" standalone="no"?><!-- Generator: Gravit.io -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="605.576 328.131 155.924 141.737" width="155.924" height="141.737" id="minimize">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="0 0 100.745 6.811" width="100%" height="100%" id="minimize">
     <defs>
         <style>
-            @import url(../svg-anim.css)
+            @import url(/Users/IB8/ProgrammingWorkspace/maple/svg-anim.css)
         </style>
+
+        <script type="text/javascript">
+            document.getElementById("minimize").addEventListener("mousedown", function() {
+                this.classList.toggle("click");
+            });
+            document.getElementById("minimize").addEventListener("mouseup", function() {
+                this.classList.toggle("click");
+                window.parent.postMessage("minimizewindow","*");
+            });
+        </script>
     </defs>
 
-    <path class="minimize" d=" M 757.43 409.752 L 743.613 433.684 L 729.796 457.616 C 726.37 463.551 718.025 468.369 711.173 468.369 L 683.538 468.369 L 655.904 468.369 C 649.051 468.369 640.707 463.551 637.28 457.616 L 623.463 433.684 L 609.646 409.752 C 606.22 403.818 606.22 394.182 609.646 388.248 L 623.463 364.316 L 637.28 340.384 C 640.707 334.449 649.051 329.631 655.904 329.631 L 683.538 329.631 L 711.173 329.631 C 718.025 329.631 726.37 334.449 729.796 340.384 L 743.613 364.316 L 757.43 388.248 C 760.857 394.182 760.857 403.818 757.43 409.752 Z " id="polygon"/>
-    <rect class="minimize-symb" x="680.133" y="348.627" width="6.811" height="100.745" transform="matrix(0,-1,1,0,284.538,1082.538)" id="Rectangle" fill="rgb(38,38,38)"/>
+    <rect id="min-path" class="poly" x="46.967" y="-46.967" width="6.811" height="100.745" transform="matrix(0,-1,1,0,46.967,53.778)" />
 </svg>

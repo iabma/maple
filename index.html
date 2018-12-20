@@ -10,13 +10,14 @@
     </head>
     <body>
         <div class="title-bar">
-            <embed id="close" class="bar-button" src="img/close.svg">
-            <embed id="minimize" class="bar-button" src="img/minimize.svg">
-            <embed id="expand" class="bar-button" src="img/expand.svg">
-            <div class="title">maple</div>
+            <iframe id="close" class="bar-button" src="img/close.svg"></iframe>
+            <object id="minimize" class="bar-button" data="./img/minimize.svg" type="image/svg+xml"></object>
+            <object id="expand" class="bar-button" data="./img/expand.svg" type="image/svg+xml"></object>
+            <div class="title"></div>
         </div>
+
         <script>
-            require("index.js");
+            require("./index.js");
         </script>
     </body>
 </html>

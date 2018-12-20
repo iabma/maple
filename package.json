@@ -9,6 +9,7 @@
         "start": "electron ."
     },
     "dependencies": {
-        "less": "^3.9.0"
+        "less": "^3.9.0",
+        "xmlhttprequest": "^1.8.0"
     }
 }

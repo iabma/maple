@@ -1,61 +1,65 @@
-#polygon {
+.poly {
+  fill-rule: evenodd;
   vector-effect: scaling-stroke;
   stroke-linejoin: miter;
   stroke-linecap: square;
   stroke-miterlimit: 3;
   stroke: #fff;
-  stroke-width: 8;
+  stroke-width: 10;
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
   -webkit-animation: dash 1s linear forwards;
   -moz-animation: dash 1s linear forwards;
   animation: dash 1s linear forwards;
 }
-.close {
+#close-path {
   fill: #ff5757;
+  transition: .3s;
 }
-.minimize {
+#min-path {
   fill: #ffe357;
+  transition: .3s;
 }
-.expand {
+#exp-path {
   fill: #57ff7e;
+  transition: .3s;
 }
-#close:hover .close-symb {
+#close:hover .poly {
+  transform: scale(0.8);
+  transform-origin: center;
   fill: white;
   transition: .3s;
 }
-#minimize:hover .minimize-symb {
+#minimize:hover .poly {
+  transform: scale(0.8) rotate(-90deg);
+  transform-origin: center;
   fill: white;
   transition: .3s;
 }
-#expand:hover .expand-symb {
+#expand:hover .poly {
+  transform: scale(0.8);
+  transform-origin: center;
   fill: white;
   transition: .3s;
 }
-/* 
-#logo {
-    cursor: pointer;
+#close.click .poly {
+  fill: gold;
+  transform: scale(1.2);
+  transform-origin: center;
+  transition: 0.2s;
 }
-
-#logo:hover 
-.st0 {
-    fill: #fff;
-    transition: .2s;
+#minimize.click .poly {
+  fill: gold;
+  transform: scale(1.2) rotate(-90deg);
+  transform-origin: center;
+  transition: 0.2s;
 }
-.st1 {
-    fill: #fff;
-    transition: .2s;
+#expand.click .poly {
+  fill: gold;
+  transform: scale(1.2);
+  transform-origin: center;
+  transition: 0.2s;
 }
-
-#logo.clickit 
-.st0 {
-    fill: #1b75bb;
-    stroke: #1b75bb;
-}
-.st1 {
-    stroke: none;
-    fill: #fff;
-} */
 @keyframes dash {
   to {
     stroke-dashoffset: 0;

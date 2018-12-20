@@ -16,12 +16,12 @@ body {
 	width: 100%;
 	height: 24px;
 	-webkit-app-region: drag;
-	background-color: @title-background-color;
+	/* background-color: @title-background-color; */
+	-webkit-user-select: none;
 
 	.title {
 		left: 100px;
 		display: inline-block;
-		-webkit-user-select: none;
 		-moz-user-select: none;
 		-o-user-select: none;
 		user-select: none;
@@ -33,80 +33,12 @@ body {
 	.bar-button {
 		display: inline-block;
 		-webkit-app-region: no-drag;
-		width: 17px;
-		height: 17px;
-		padding: 3px;
+		width: 13px;
+		height: 13px;
+		padding-right: 5px;
+		padding-left: 10px;
+		padding-top: 10px;
+		transition: .3s;
+		border: none;
 	}
 }
-
-/* .st0 {
-    fill: rgb(32, 30, 32);
-    fill-rule: evenodd;
-    vector-effect: scaling-stroke;
-    stroke-width: 5;
-    stroke: #fff;
-    stroke-linejoin: round;
-    stroke-linecap: square;
-    stroke-miterlimit: 3;
-}
-
-.st1 {
-    fill: rgb(32, 30, 32);
-    fill-rule: evenodd;
-    vector-effect: scaling-stroke;
-    stroke-width: 2;
-    stroke: #fff;
-    stroke-linejoin: round;
-    stroke-linecap: square;
-    stroke-miterlimit: 3;
-}
-
-.st0 {
-    stroke-dasharray: 1410;
-    stroke-dashoffset: 0;
-    -webkit-animation: dash 2s linear forwards;
-    -o-animation: dash 2s linear forwards;
-    -moz-animation: dash 2s linear forwards;
-    animation: dash 2s linear forwards;
-}
-
-.st1 {
-    stroke-dasharray: 1410;
-    stroke-dashoffset: 0;
-    -webkit-animation: dash 2s linear forwards;
-    -o-animation: dash 2s linear forwards;
-    -moz-animation: dash 2s linear forwards;
-    animation: dash 2s linear forwards;
-}
-
-#logo {
-    cursor: pointer;
-}
-
-#logo:hover 
-.st0 {
-    fill: #fff;
-    transition: .2s;
-}
-.st1 {
-    fill: #fff;
-    transition: .2s;
-}
-
-#logo.clickit 
-.st0 {
-    fill: #1b75bb;
-    stroke: #1b75bb;
-}
-.st1 {
-    stroke: none;
-    fill: #fff;
-}
-
-@keyframes dash {
-    from {
-        stroke-dashoffset: 1410;
-    } to {
-        stroke-dashoffset: 0;
-    }
-} */
