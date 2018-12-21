@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?><!-- Generator: Gravit.io -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="-7 -7 154 132" width="154" height="132">
+    <defs>
+        <filter id="P41FgFl0JeO0H074KvhlX5ySbJnv6MTD" x="-200%" y="-200%" width="400%" height="400%" filterUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+            <feGaussianBlur xmlns="http://www.w3.org/2000/svg" in="SourceGraphic" stdDeviation="2.146804531419514"/>
+            <feOffset xmlns="http://www.w3.org/2000/svg" dx="0" dy="0" result="pf_100_offsetBlur"/>
+            <feFlood xmlns="http://www.w3.org/2000/svg" flood-color="#481414" flood-opacity="0.54"/>
+            <feComposite xmlns="http://www.w3.org/2000/svg" in2="pf_100_offsetBlur" operator="in" result="pf_100_dropShadow"/>
+            <feBlend xmlns="http://www.w3.org/2000/svg" in="SourceGraphic" in2="pf_100_dropShadow" mode="normal"/>
+        </filter>
+    </defs>
+    <g filter="url(#P41FgFl0JeO0H074KvhlX5ySbJnv6MTD)">
+        <path d=" M 70 103 Q 58.099 117.61 35 117 C 44.54 116.579 45.42 101.709 21 100 C 19.823 90.946 9.021 92.504 0 81 C 13.954 89.491 26.73 78.793 27 75 Q 24.445 65.602 15 58 C 26.211 56.306 20.709 49.927 22 45 C 23.291 40.073 19.555 36.637 15 28 C 20.061 35.349 34.407 41.143 37 38 C 40.385 43.074 47.558 44.362 52 47 C 54.305 46.532 54.585 45.728 55 45 C 55.249 43.63 54.041 25.66 56 22 C 59.406 26.407 72.207 9.024 71 0 C 74.783 0.057 67.361 8.495 82 21 C 82.733 20.714 83.908 20.218 85 20 C 83.968 23.354 87.286 46.055 90 45 C 92.714 43.945 120.087 36.083 125 28 C 118.37 38.626 112.085 58.913 123 54 C 115.148 64.999 99.555 79.796 125 83 C 133.026 84.912 133.194 82.391 140 81 C 135.912 84.013 112.352 98.907 122 100 C 113.493 102.849 95.289 102.44 105 118 Q 82.546 111.14 70 103 Z " fill="rgb(181,71,46)"/>
+    </g>
+    <defs>
+        <filter id="k3eCzZA4umzxtnwDkrWxkI7YsMiWWjn9" x="-200%" y="-200%" width="400%" height="400%" filterUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+            <feGaussianBlur xmlns="http://www.w3.org/2000/svg" in="SourceGraphic" stdDeviation="1.2880827188517086"/>
+            <feOffset xmlns="http://www.w3.org/2000/svg" dx="0" dy="0" result="pf_100_offsetBlur"/>
+            <feFlood xmlns="http://www.w3.org/2000/svg" flood-color="#000000" flood-opacity="1"/>
+            <feComposite xmlns="http://www.w3.org/2000/svg" in2="pf_100_offsetBlur" operator="in" result="pf_100_dropShadow"/>
+            <feBlend xmlns="http://www.w3.org/2000/svg" in="SourceGraphic" in2="pf_100_dropShadow" mode="normal"/>
+        </filter>
+    </defs>
+    <g filter="url(#k3eCzZA4umzxtnwDkrWxkI7YsMiWWjn9)">
+        <g transform="matrix(0.555,0,0,0.531,32,57.25)">
+            <text transform="matrix(1,0,0,1,0,46.078)" style="font-family:'Nova Flat';font-weight:400;font-size:48px;font-style:normal;fill:#f98a71;stroke:none;">maple</text>
+        </g>
+    </g>
+</svg>

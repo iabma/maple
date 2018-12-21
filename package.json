@@ -1,6 +1,6 @@
 {
     "name": "maple",
-    "version": "12.19.18",
+    "version": "12.20.18",
     "main": "main.js",
     "devDependencies": {
         "electron": "^3.0.13"
@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "less": "^3.9.0",
+        "materialize-css": "^1.0.0-rc.2",
         "xmlhttprequest": "^1.8.0"
     }
 }

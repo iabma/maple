@@ -15,36 +15,40 @@ const operatingSystems = {
 };
 const plat = operatingSystems[process.platform];
 
-let main;
+let main, start;
 
 function createWindow() {
-    main = new BrowserWindow({
-        transparent: true,
+    start = new BrowserWindow({
+        opacity: 0,
+        hasShadow: false,
+        width: 550,
+        height: 329,
+        resizable: false,
         frame: false
     });
 
-    main.loadURL(url.format({
-        pathname: path.join(__dirname, "index.html"),
+    start.loadURL(url.format({
+        pathname: path.join(__dirname, "./html/start.html"),
         protocol: "file",
         slashes: true
     }));
 
-    main.webContents.openDevTools();
-    main.on("close", () => {
-        main = null
+    start.webContents.openDevTools();
+    start.on("close", () => {
+        start = null;
     });
 }
 
 app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
-    if (plat !== "macOS") {
+    if (plat !== "macOS") { // ? Do I want this if statement?
         app.quit();
     }
 });
 
 app.on("activate", () => {
-    if (main === null) {
+    if (start === null) {
         createWindow();
     }
 });

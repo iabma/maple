@@ -1,0 +1,121 @@
+@background-color: rgb(32, 32, 32);
+@transition: .3s;
+@hover-size: .8;
+@click-size: 1.2;
+@close-fill-color: rgb(255,87,87);
+@minimize-fill-color: rgb(255,227,87);
+@expand-fill-color: rgb(87,255,126);
+@highlight-color: white;
+@click-color: gold;
+
+.anim {
+    -webkit-animation: dash @transition linear forwards;
+    -moz-animation: dash @transition linear forwards;
+    -ms-animation: dash @transition linear forwards;
+    animation: dash @transition linear forwards;
+}
+
+.poly {
+    fill-rule: evenodd;
+    vector-effect: scaling-stroke;
+    stroke-linejoin: miter;
+    stroke-linecap: square;
+    stroke-miterlimit: 3;
+    stroke: #fff;
+    stroke-width: 10;
+    .anim;
+}
+
+#close-path {
+    fill: @close-fill-color;
+    transition: @transition;
+}
+
+#min-path {
+    fill: @minimize-fill-color;
+    transition: @transition;
+}
+
+#exp-path {
+    transform: rotate(60deg);
+    transform-origin: center;
+    fill: @expand-fill-color;
+    transition: @transition;
+}
+
+#coll-path {
+    transform: rotate(-60deg);
+    transform-origin: center;
+    fill: @expand-fill-color;
+    transition: @transition;
+}
+
+#close:hover
+.poly {
+    transform: scale(@hover-size);
+    transform-origin: center;
+    fill: @highlight-color;
+    transition: @transition;
+}
+
+#minimize:hover
+.poly {
+    transform: scale(@hover-size) rotate(-90deg);
+    transform-origin: center;
+    fill: @highlight-color;
+    transition: @transition;
+}
+
+#expand:hover
+.poly {
+    transform: scale(@hover-size);
+    transform-origin: center;
+    fill: @highlight-color;
+    transition: @transition;
+}
+
+#collapse:hover
+.poly {
+    transform: scale(@hover-size);
+    transform-origin: center;
+    fill: @highlight-color;
+    transition: @transition;
+}
+
+#close.click
+.poly {
+    fill: @click-color;
+    transform: scale(@click-size);
+    transform-origin: center;
+    transition: @transition
+}
+
+#minimize.click
+.poly {
+    fill: @click-color;
+    transform: scale(@click-size) rotate(-90deg);
+    transform-origin: center;
+    transition: @transition
+}
+
+#expand.click
+.poly {
+    fill: @click-color;
+    transform: scale(@click-size);
+    transform-origin: center;
+    transition: @transition
+}
+
+#collapse.click
+.poly {
+    fill: @click-color;
+    transform: scale(@click-size);
+    transform-origin: center;
+    transition: @transition
+}
+
+@keyframes dash {
+    to {
+        stroke-width: 0;
+    }
+}

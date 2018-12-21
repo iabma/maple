@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="0 0 114.181 102.944" width="100%" height="100%" id="expand">
     <defs>
         <style>
-            @import url(/Users/IB8/ProgrammingWorkspace/maple/svg-anim.css)
+            @import url(../css/svg-anim.css)
         </style>
 
         <script type="text/javascript">
