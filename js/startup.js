@@ -1,10 +1,16 @@
-const { ipcRenderer } = require("electron");
+const { ipcRenderer } = require("electron"),
+    cmd = require("child_process");
 
 let openButton = document.getElementById("btn-open");
 let highlight = document.getElementById("highlight");
 let versionText = document.getElementById("version");
 
-require('child_process').exec('git log -1 --format="%aD"', function(err, stdout) {
+cmd.exec('git log -1 --format="%aD"', (err, stdout) => {
+    if (err) {
+        console.log("Error: " + err);
+        return;
+    }
+
     let current = new Date(stdout);
     versionText.innerHTML = "v. " + current.getDate() + "." + (current.getMonth() + 1) + "." + (current.getFullYear() - 2000);
 });

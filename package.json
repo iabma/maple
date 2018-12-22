@@ -9,6 +9,8 @@
         "start": "electron ."
     },
     "dependencies": {
+        "babel": "^6.23.0",
+        "babel-cli": "^6.26.0",
         "less": "^3.9.0",
         "materialize-css": "^1.0.0-rc.2",
         "xmlhttprequest": "^1.8.0"

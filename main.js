@@ -1,9 +1,9 @@
 console.log("running main");
 
-const { app, BrowserWindow, dialog, ipcMain } = require("electron");
-const path = require("path");
-const url = require("url");
-const fs = require("fs");
+const { app, BrowserWindow, dialog, ipcMain } = require("electron"),
+    path = require("path"),
+    url = require("url"),
+    fs = require("fs");
 
 const operatingSystems = {
     "darwin": "macOS",
@@ -14,11 +14,7 @@ const operatingSystems = {
 };
 const plat = operatingSystems[process.platform]; // ! unused
 
-let main, start;
-
-require('child_process').exec('git rev-parse HEAD', function(err, stdout) {
-    console.log('Last commit hash on this branch is:', stdout);
-});
+let main, start, dir;
 
 function createStartWindow() {
     start = new BrowserWindow({
@@ -76,18 +72,20 @@ function fadeStart() {
     console.log(o);
 }
 
-ipcMain.on("openDir", (event) => {
-    let dir = dialog.showOpenDialog(start, { properties: ['openDirectory'] });
+ipcMain.on("openDir", () => {
+    dir = dialog.showOpenDialog(start, { properties: ['openDirectory'] });
     if (!dir) { 
         console.log("No selected directory.");
         return; 
     }
 
-    console.log(dir[0]);
-
     fadeStart();
     setTimeout(switchToMain, 500);
 })
+
+ipcMain.on("requestDir", (event) => {
+    event.returnValue = dir[0];
+});
 
 ipcMain.on("openFile", (event) => {
     dialog.showOpenDialog(start, (fileNames) => {
