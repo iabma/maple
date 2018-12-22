@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400");
+@import url("../fonts/fonts.css");
 html {
   height: 100vh;
 }
@@ -6,10 +6,9 @@ body {
   -webkit-app-region: drag;
   width: 100%;
   height: 100%;
-  background-image: url("../img/start-back.svg");
   background-size: cover;
   background-position: 0px -68px;
-  background-color: none;
+  background-color: #0e0e0f;
   padding: 0px;
   margin: 0px;
   overflow-x: hidden;
@@ -18,9 +17,21 @@ body {
 .banner {
   z-index: 1;
   position: fixed;
-  top: -68px;
+  top: -82px;
 }
-.open .mask {
+#version {
+  z-index: 2;
+  position: fixed;
+  width: fit-content;
+  height: 10%;
+  right: 9px;
+  top: 65px;
+  font-size: 18px;
+  font-family: "Nova Flat", cursive;
+  color: #f98a71;
+  transform: rotate(45deg);
+}
+.open object {
   z-index: 0;
   left: 0px;
   width: 100%;
@@ -43,4 +54,37 @@ body {
   color: white;
   width: 60%;
   height: 70%;
+  transition: all 0.4s ease-out;
+}
+.open svg {
+  transition: all 0.4s ease-out;
+  z-index: 0;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+}
+.open svg circle {
+  transition: all 0.4s ease-out;
+  fill: #b5472e;
+  opacity: 1;
+  cx: 0;
+  cy: 0;
+  r: 0;
+}
+.open button.disappear {
+  color: #b5472e;
+  /* font-size: 0px; */
+  transition: all 0.4s ease-out;
+}
+.open svg.expand {
+  left: 0%;
+  top: 0%;
+  transition: all 0.4s ease-out;
+}
+.open svg.expand circle {
+  position: relative;
+  transition: all 0.4s ease-out;
+  cx: 250;
+  cy: 250;
+  r: 250;
 }

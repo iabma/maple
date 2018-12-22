@@ -1,5 +1,5 @@
 @background-color: rgb(32, 32, 32);
-@transition: .3s;
+@transition: all 0.3s cubic-bezier(0.64, 0.57, 0.67, 1.53);
 @hover-size: .8;
 @click-size: 1.2;
 @close-fill-color: rgb(255,87,87);
@@ -7,23 +7,10 @@
 @expand-fill-color: rgb(87,255,126);
 @highlight-color: white;
 @click-color: gold;
-
-.anim {
-    -webkit-animation: dash @transition linear forwards;
-    -moz-animation: dash @transition linear forwards;
-    -ms-animation: dash @transition linear forwards;
-    animation: dash @transition linear forwards;
-}
+@highlight-end-radius: 250;
 
 .poly {
     fill-rule: evenodd;
-    vector-effect: scaling-stroke;
-    stroke-linejoin: miter;
-    stroke-linecap: square;
-    stroke-miterlimit: 3;
-    stroke: #fff;
-    stroke-width: 10;
-    .anim;
 }
 
 #close-path {
@@ -87,7 +74,7 @@
     fill: @click-color;
     transform: scale(@click-size);
     transform-origin: center;
-    transition: @transition
+    transition: @transition;
 }
 
 #minimize.click
@@ -95,7 +82,7 @@
     fill: @click-color;
     transform: scale(@click-size) rotate(-90deg);
     transform-origin: center;
-    transition: @transition
+    transition: @transition;
 }
 
 #expand.click
@@ -103,7 +90,7 @@
     fill: @click-color;
     transform: scale(@click-size);
     transform-origin: center;
-    transition: @transition
+    transition: @transition;
 }
 
 #collapse.click
@@ -111,11 +98,5 @@
     fill: @click-color;
     transform: scale(@click-size);
     transform-origin: center;
-    transition: @transition
-}
-
-@keyframes dash {
-    to {
-        stroke-width: 0;
-    }
+    transition: @transition;
 }
