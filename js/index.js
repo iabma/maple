@@ -1,75 +1,58 @@
-require("../js/top-bar.js");
+var orderedHashes = [],
+    commits = [],
+    logs,
+    parseComplete = false;
 
-const { ipcRenderer } = require("electron"),
-    fs = require("fs"),
-    path = require("path"),
-    cmd = require("child_process");
-
-function getLogs() {
-    let commits = fs.readFileSync(path.resolve(ipcRenderer.sendSync("requestDir"), "./.git/logs/HEAD")).toString(),
-        logs = commits.split("\n");
-    console.log(commits);
-    logs.pop();
-    return logs;
-}
-
-var commits = {},
-    orderedHashes = [];
-
-async function getCommitInfo(hash) {
-    cmd.exec('git show --name-only ' + hash, (err, stdout) => {
+async function getLogs() {
+    await git.log(["--pretty=oneline"], (err, out) => {
         if (err) {
             console.log("Error: " + err);
             return;
         }
 
-        let lines = stdout.split("\n");
-
-        let info = [
-            lines[1].substring(8),
-            lines[2].substring(8),
-        ]
-    
-        return info;
+        logs = out.latest.hash.split("\n")
+        parseLogs(logs)
     });
 }
 
-async function parseLogs() {
-    let data = await getLogs();
-    data.forEach((commit) => {
-        var hash = commit.substring(41, 81),
-            fileNames;
+async function parseLogs(logs) {
+    let numCommits = logs.length;
 
-        console.log(2);
-        orderedHashes.push(hash);
-        cmd.exec('git show --name-only --pretty="" ' + hash, async (err, stdout) => {
-            console.log(2);
-            if (err) {
-                console.log("Error: " + err);
-                return;
-            }
+    await logs.forEach(commit => {
+        var hash = commit.split(" ")[0];
 
-            let lines = stdout.split("\n");
+        orderedHashes.unshift(hash);
+        git.show(["--name-only", "--pretty=email", hash], (err, out) => {
+            if (err) console.error(err);
 
-            let info = await getCommitInfo(hash);
+            let lines = out.split("\n");
 
+            var startFound = false;
+            var line = 0;
+            var startLine = -1;
+            do {
+                if (fs.existsSync(mainDir + lines[line])) {
+                    startFound = true;
+                    startLine = line;
+                } else {
+                    line++;
+                }
+            } while (!startFound);
 
-            fileNames = lines.slice();
-            commits[hash] = {
-                authorInfo: info[0],
-                date: info[1],
-                files: fileNames
+            var commit = {
+                hash: hash,
+                authorInfo: lines[1].substring(6),
+                date: lines[2].substring(6),
+                subject: lines[3].substring(9),
+                files: lines.slice(startLine)
             };
+
+            commits[orderedHashes.indexOf(hash)] = commit;
+            if (Object.keys(commits).length === numCommits) {
+                parseComplete = true;
+            }
         });
     });
 }
 
-async function displayCommits() {
-    await parseLogs();
-    console.log(commits);
-    for (let i = 0; i < commits.length; i++) {
-        document.getElementById("temp").innerHTML += commits[orderedHashes[i]];
-    }
-}
-
-displayCommits();
+getLogs();

@@ -1,8 +1,9 @@
 @background-color: rgb(14,14,15);
-@title-font: Arial, Helvetica, sans-serif; // TODO Roboto
+@main-font: "Roboto", sans-serif;
 @title-background-color: rgb(20,20,21);
 @title-color: white;
 @default-text-color: rgb(255, 49, 49);
+@transition-timing: cubic-bezier(.29,.87,.7,1.02);
 
 body {
 	background-color: @background-color;
@@ -13,7 +14,7 @@ body {
 }
 
 .title-bar {
-	background-color: @title-background-color; // * Defined at the moment
+	background-color: @background-color; // * Defined at the moment
 	width: 100%;
 	height: 34px;
 	-webkit-app-region: drag;
@@ -43,8 +44,46 @@ body {
 	} */
 }
 
-#temp {
-	padding-left: 15px;
-	padding-top: 15px;
-	color: white;
+#directory {
+	-webkit-user-select: none;
+	display: inline-block;
+	color: @default-text-color;
+	text-align: left;
+	font: @main-font;
+	margin-left: 5vh;
+	width: 90vh;
+	height: fit-content;
+}
+
+#tooltip {
+	-webkit-user-select: none;
+	position: absolute;
+	color: @background-color;
+	text-align: left;
+	align-content: center;
+	font: @main-font;
+	width: fit-content;
+	height: fit-content;
+	margin-left: 50vh;
+	margin-top: -50vh;
+	pointer-events: none;
+}
+
+#container {
+	background: @background-color;
+	display: block;
+	margin-top: auto;
+	margin-left: 5vh;
+	height: 90vh;
+	width: 90vh;
+}
+
+circle {
+	stroke-width: 0px;
+	transition: .5s @transition-timing;
+}
+
+circle:hover {
+	stroke-width: 10px;
+	transition: .3s @transition-timing;
 }

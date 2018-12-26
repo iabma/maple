@@ -1,6 +1,5 @@
-const remote = require("electron").remote;
-
 let currentWindow = remote.getCurrentWindow();
+
 if (!currentWindow.isMaximized()) {
     document.getElementById("expand").data = "../img/expand.svg";
 } else {

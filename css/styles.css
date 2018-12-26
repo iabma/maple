@@ -6,7 +6,7 @@ body {
   overflow-y: hidden;
 }
 .title-bar {
-  background-color: #141415;
+  background-color: #0e0e0f;
   width: 100%;
   height: 34px;
   -webkit-app-region: drag;
@@ -33,8 +33,42 @@ body {
   padding-top: 10px;
   transition: .3s;
 }
-#temp {
-  padding-left: 15px;
-  padding-top: 15px;
-  color: white;
+#directory {
+  -webkit-user-select: none;
+  display: inline-block;
+  color: #ff3131;
+  text-align: left;
+  font: "Roboto", sans-serif;
+  margin-left: 5vh;
+  width: 90vh;
+  height: fit-content;
+}
+#tooltip {
+  -webkit-user-select: none;
+  position: absolute;
+  color: #0e0e0f;
+  text-align: left;
+  align-content: center;
+  font: "Roboto", sans-serif;
+  width: fit-content;
+  height: fit-content;
+  margin-left: 50vh;
+  margin-top: -50vh;
+  pointer-events: none;
+}
+#container {
+  background: #0e0e0f;
+  display: block;
+  margin-top: auto;
+  margin-left: 5vh;
+  height: 90vh;
+  width: 90vh;
+}
+circle {
+  stroke-width: 0px;
+  transition: 0.5s cubic-bezier(0.29, 0.87, 0.7, 1.02);
+}
+circle:hover {
+  stroke-width: 10px;
+  transition: 0.3s cubic-bezier(0.29, 0.87, 0.7, 1.02);
 }

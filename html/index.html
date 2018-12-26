@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
         <link rel="stylesheet/less" href="../css/styles.less" />
         <script src="../js/less.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
     </head>
     <body>
         <div class="title-bar">
@@ -17,9 +18,18 @@
             <object id="expand" class="bar-button" data="../img/expand.svg" type="image/svg+xml"></object>
         </div>
 
-        <div id="temp">.</div>
+        <svg id="container" width="960" height="960" ></svg>
 
+        <div id="directory"></div>
+
+        <div id="tooltip"></div>
+
+        <script src="../js/modules.js"></script>
+        <script src="../js/node-types.js"></script>
+        <script src="../js/top-bar.js"></script>
         <script src="../js/index.js"></script>
+        <script src="../js/dir-db-gen.js"></script>
+        <script src="../js/circle-pack.js"></script>
         <script src="../js/materialize.min.js"></script>
     </body>
 </html>

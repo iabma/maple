@@ -16,7 +16,7 @@
   transition: all 0.3s cubic-bezier(0.64, 0.57, 0.67, 1.53);
 }
 #coll-path {
-  transform: rotate(-60deg);
+  transform: rotate(-45deg);
   transform-origin: center;
   fill: #57ff7e;
   transition: all 0.3s cubic-bezier(0.64, 0.57, 0.67, 1.53);
@@ -34,7 +34,7 @@
   transition: all 0.3s cubic-bezier(0.64, 0.57, 0.67, 1.53);
 }
 #expand:hover .poly {
-  transform: scale(0.8);
+  transform: scale(0.8) rotate(15deg);
   transform-origin: center;
   fill: white;
   transition: all 0.3s cubic-bezier(0.64, 0.57, 0.67, 1.53);
