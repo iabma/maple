@@ -1,4 +1,5 @@
 let currentRootHash,
+    currentSelectedNode,
     width = document.getElementById("container").width.baseVal.value,
     height = width;
 
@@ -22,6 +23,8 @@ function getLayer(dir) {
     dir.children.forEach(child => {
         if (child.children) child.children = [];
     });
+
+    return dir;
 }
 
 function findParent(tree, hash, parent) {
@@ -58,38 +61,6 @@ function searchTree(tree, hash) {
     }
 
     return null;
-}
-
-function addFrom(g, data, version) {
-    let root = d3.hierarchy(data)
-        .sum(d => Math.log(d.size))
-        .sort((a, b) => b.value - a.value);
-
-    console.log(root);
-
-    let circle = g
-        .selectAll("circle")
-        .data(pack(root).descendants());
-    let v = [root.x, root.y, root.r * 2.1];
-    let k = width / v[2];
-
-    circle.exit().remove();
-
-    circle.enter().append("circle")
-        .attr("id", d => d.data.hash)
-        .attr("fill", "#fff")
-        .attr("stroke", "#fff")
-        .merge(circle)
-        .on("mousemove", showInfo)
-        .on("mouseout", hideInfo)
-        .transition()
-        .attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`)
-        .attr("r", d => d.r * k)
-        .attr("fill", findColor)
-        .attr("stroke", findColor)
-        .duration(1000);
-
-    console.log(circle)
 }
 
 function timeline(tree, versions) {
@@ -153,7 +124,7 @@ function findColor(d) {
     }
 }
 
-async function updateInfo(node) {
+async function updateInfo(tree, node) {
     document.getElementById("stats").getElementsByClassName("text")[0].innerHTML =
         "INFO<br>name - " + node.data.name + "<br>kind - " + node.data.type + "<br>size - " + formatSize(node.data.size);
 
@@ -162,18 +133,41 @@ async function updateInfo(node) {
         await fs.readFile(node.data.path, (err, data) => {
             if (err) console.error(err);
 
-            console.log(data.toString().split("\n").join("<br>"))
-
             d3.select("#specialized")
                 .append("textarea")
                 .html(data.toString());
         })
+    } else if (node.data.type == "folder") {
+        let tempNode = searchTree(tree, node.data.hash);
+
+        var item = d3.select("#specialized")
+            .selectAll("div")
+            .data(tempNode.children)
+            .enter()
+            .append("div");
+
+        item.attr("class", "child");
+            
+        /*item.append("i")
+            .attr("class", "material-icons circle")
+            .html("folder")*/
+
+        item.append("p")
+            .html(d => d.name + "<br>" + formatSize(d.size));
     }
 }
 
-/* function expand(node) {
+function expand(tree, root, node) {
+    searchTree(root, node.data.hash).children = searchTree(tree, node.data.hash).children;
 
-} */
+    createVisual(root);
+}
+
+function collapse(root, node) {
+    searchTree(root, node.data.hash).children = [];
+
+    createVisual(root);
+}
 
 async function createVisual(input) {
     currentRootHash = input.hash;
@@ -181,7 +175,7 @@ async function createVisual(input) {
     d3.json(path.resolve(__dirname, "../js/dir.json"), async (err, tree) => {
         if (err) console.error(err);
 
-        document.getElementById("container").innerHTML = null;
+        //document.getElementById("container").innerHTML = null;
 
         //getLayer(input); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
 
@@ -189,7 +183,7 @@ async function createVisual(input) {
             .sum(d => Math.log(d.size))
             .sort((a, b) => b.value - a.value);
 
-        updateInfo(root);
+        updateInfo(tree, currentSelectedNode  || root);
 
         let focus = root,
             packed = pack(root),
@@ -201,21 +195,23 @@ async function createVisual(input) {
                 if (document.getElementById("directory").innerHTML === "") createVisual(tree);
             })
 
-        const threshhold = 25;
+        const threshold = 25;
         var amt = 0;
 
-        const node = svg.append("g")
-            .attr("id", "gsvg")
+        const node = d3.select("#gsvg")
             .selectAll("circle")
             .data(nodes)
-            .enter().append("circle")
+
+
+        const circle = node.enter().append("circle");
+
+        circle
             .attr("id", d => d.data.hash)
-            .attr("fill", findColor)
-            .attr("stroke", findColor)
-            .attr('r', d => d.r)
+            //.attr("transform", d => `translate(${(d.x - root.x) * (width / (root.r * 2.1))},${(d.y - root.y) * width / (root.r * 2.1)})`)
+            .merge(node)
             .on("wheel", d => {
                 var direction = d3.event.wheelDelta < 0 ? "up" : "down";
-                if (amt <= threshhold) {
+                if (amt <= threshold) {
                     amt++;
                 } else {
                     amt = 0;
@@ -228,15 +224,18 @@ async function createVisual(input) {
                         }
                     } else if (direction === "down" && currentRootHash !== currentMainHash) {
                         let parent = findParent(tree, currentRootHash, null);
-                        console.log(parent);
+                        //console.log(parent);
                         let info = searchTree(tree, parent.hash);
                         createVisual(info);
                     }
                 }
             })
             .on("click", d => {
+                if (currentSelectedNode != d) {
+                    currentSelectedNode = d;
+                    updateInfo(tree, d);
+                }
                 if (focus !== d) {
-                    updateInfo(d);
                     zoom(d);
                     d3.event.stopPropagation();
                 } else {
@@ -244,13 +243,23 @@ async function createVisual(input) {
                 }
             })
             .on("contextmenu", d => {
-                console.log(d);
+                if (currentSelectedNode != d) {
+                    currentSelectedNode = d;
+                    updateInfo(tree, d);
+                }
+                //console.log(d);
+                if (d.children) {
+                    collapse(input, d);
+                } else if (d.data.type == "folder") {
+                    expand(tree, input, d);
+                }
             })
             .on("mousemove", (node) => updatePath(tree, node))
             .on("mouseout", hidePath)
 
+        node.exit().remove();
 
-        console.log(root)
+        //console.log(root)
         /* const label = svg.append("g")
             .style("font-family", "10px sans-serif")
             .attr("pointer-events", "none")
@@ -271,8 +280,14 @@ async function createVisual(input) {
             view = v;
 
             // label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-            node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-            node.attr("r", d => d.r * k);
+            circle
+                .merge(node)
+                .transition()
+                .attr("fill", findColor)
+                .attr("stroke", findColor)
+                .attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`)
+                .attr("r", d => d.r * k)
+                .duration(100);
         }
 
         function zoom(d) {
