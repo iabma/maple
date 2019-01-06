@@ -69,7 +69,7 @@ function fadeStart() {
     } else {
         start.setOpacity(o - increment);
     }
-    console.log(o);
+    //console.log(o);
 }
 
 ipcMain.on("openDir", () => {

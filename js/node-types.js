@@ -8,7 +8,7 @@ const nodeTypes = {
     folder: {
         color: d3.scaleLinear()
         .domain([0, 5])
-        .range(["rgb(24, 24, 25)", "rgb(150, 150, 160)"])
+        .range(["rgb(26, 24, 24)", "rgb(160, 150, 150)"])
         .interpolate(d3.interpolateHcl)
     },
     file: {

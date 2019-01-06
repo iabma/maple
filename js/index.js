@@ -16,6 +16,18 @@ async function getLogs() {
 }
 
 async function parseLogs(logs) {
+    /* git.Repository.open(mainDir)
+        .then((repo) => {
+            return repo.getMasterCommit;
+        })
+        .then((firstCommitOnMaster) => {
+            let history = firstCommitOnMaster.history();
+
+            history.on("commit", (commit) => {
+
+            })
+        }) */
+
     let numCommits = logs.length;
 
     await logs.forEach(commit => {

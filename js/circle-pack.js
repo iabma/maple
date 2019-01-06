@@ -6,24 +6,55 @@ const pack = d3.pack()
     .size([width - 4, width - 4])
     .padding(3);
 
+function formatSize(size) {
+    if (size < 1000) {
+        return size + " B";
+    } else if (size < 1000000) {
+        return (size / 1000).toFixed(2) + " kB";
+    } else if (size < 1000000000) {
+        return (size / 1000000).toFixed(2) + " MB";
+    } else if (size < 1000000000) {
+        return (size / 1000000000).toFixed(2) + " GB";
+    }
+}
+
 function getLayer(dir) {
     dir.children.forEach(child => {
         if (child.children) child.children = [];
     });
 }
 
-function searchTree(parent, tree, hash){
+function findParent(tree, hash, parent) {
+    console.log("hi");
     if (tree.hash == hash) {
-         return [parent, tree];
+        return parent;
     } else if (tree.children != null) {
-         var i;
-         var result = null;
+        console.log("hi: " + tree.name);
+        var i;
+        var result = null;
 
-         for (i = 0; result == null && i < tree.children.length; i++){
-                result = searchTree(tree, tree.children[i], hash);
-         }
+        for (i = 0; result == null && i < tree.children.length; i++) {
+            result = findParent(tree.children[i], hash, tree);
+        }
 
-         return result;
+        return result;
+    }
+
+    return null;
+}
+
+function searchTree(tree, hash) {
+    if (tree.hash == hash) {
+        return tree;
+    } else if (tree.children != null) {
+        var i;
+        var result = null;
+
+        for (i = 0; result == null && i < tree.children.length; i++) {
+            result = searchTree(tree.children[i], hash);
+        }
+
+        return result;
     }
 
     return null;
@@ -31,8 +62,8 @@ function searchTree(parent, tree, hash){
 
 function addFrom(g, data, version) {
     let root = d3.hierarchy(data)
-            .sum(d => Math.log(d.size))
-            .sort((a,b) => b.value - a.value);
+        .sum(d => Math.log(d.size))
+        .sort((a, b) => b.value - a.value);
 
     console.log(root);
 
@@ -45,16 +76,18 @@ function addFrom(g, data, version) {
     circle.exit().remove();
 
     circle.enter().append("circle")
-    .attr("id", d => d.data.hash )
-    .merge(circle)
-    .attr("fill", findColor)
-    .attr("stroke", findColor)
-    .on("mousemove", showInfo)
-    .on("mouseout", hideInfo)
-    .transition()
+        .attr("id", d => d.data.hash)
+        .attr("fill", "#fff")
+        .attr("stroke", "#fff")
+        .merge(circle)
+        .on("mousemove", showInfo)
+        .on("mouseout", hideInfo)
+        .transition()
         .attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`)
         .attr("r", d => d.r * k)
-    .duration(1000);
+        .attr("fill", findColor)
+        .attr("stroke", findColor)
+        .duration(1000);
 
     console.log(circle)
 }
@@ -62,19 +95,19 @@ function addFrom(g, data, version) {
 function timeline(tree, versions) {
     console.log(tree.children)
     console.log(versions[0])
-    
+
     let g = d3.select("#container")
-    .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-    .append("g")
-    .attr("id", "#gsvg");
-    //createVisual(null, tree);
+        .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
+        .append("g")
+        .attr("id", "#gsvg");
+    //createVisual(tree);
 
     var index = versions.length;
     let iteration = setInterval(() => {
         index--;
 
         addFrom(g, tree);
-        //createVisual(null, tree);
+        //createVisual(tree);
 
         if (index <= 0) {
             clearInterval(iteration);
@@ -88,28 +121,20 @@ function waitForData() {
     } else {
         d3.json(path.resolve(__dirname, "../js/dir.json"), async (err, tree) => {
             if (err) console.error(err);
-    
-            timeline(tree, commits);
+
+            createVisual(tree);
+            //timeline(tree, commits);
         });
     }
 }
 
-function showInfo(node, m) {
-    let mousePos = d3.mouse(this);
-    d3.select("#tooltip")
-        .style("left", node.x)
-        .style("top", node.y)
-        .text(node.data.name);
+function updatePath(tree, node) {
+    let path = node.data.path.split("/").join(" > ");
     d3.select("#directory")
-        .text(node.data.name);
+        .text(path || tree.name);
 }
 
-function hideInfo(node, m) {
-    let mousePos = d3.mouse(this);
-    d3.select("#tooltip")
-        .style("left", mousePos[0])
-        .style("top", mousePos[1])
-        .text("");
+function hidePath() {
     d3.select("#directory")
         .text("");
 }
@@ -128,11 +153,29 @@ function findColor(d) {
     }
 }
 
-function expand(node) {
+async function updateInfo(node) {
+    document.getElementById("stats").getElementsByClassName("text")[0].innerHTML =
+        "INFO<br>name - " + node.data.name + "<br>kind - " + node.data.type + "<br>size - " + formatSize(node.data.size);
 
+    d3.select("#specialized").html("");
+    if (node.data.type == "file") {
+        await fs.readFile(node.data.path, (err, data) => {
+            if (err) console.error(err);
+
+            console.log(data.toString().split("\n").join("<br>"))
+
+            d3.select("#specialized")
+                .append("textarea")
+                .html(data.toString());
+        })
+    }
 }
 
-async function createVisual(parent, input) {
+/* function expand(node) {
+
+} */
+
+async function createVisual(input) {
     currentRootHash = input.hash;
 
     d3.json(path.resolve(__dirname, "../js/dir.json"), async (err, tree) => {
@@ -140,11 +183,13 @@ async function createVisual(parent, input) {
 
         document.getElementById("container").innerHTML = null;
 
-        getLayer(input); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
+        //getLayer(input); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
 
         root = d3.hierarchy(input)
             .sum(d => Math.log(d.size))
-            .sort((a,b) => b.value - a.value);
+            .sort((a, b) => b.value - a.value);
+
+        updateInfo(root);
 
         let focus = root,
             packed = pack(root),
@@ -153,7 +198,7 @@ async function createVisual(parent, input) {
         const svg = d3.select("#container")
             .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
             .on("click", () => {
-                if (document.getElementById("directory").innerHTML === "") createVisual(null, tree);
+                if (document.getElementById("directory").innerHTML === "") createVisual(tree);
             })
 
         const threshhold = 25;
@@ -164,7 +209,7 @@ async function createVisual(parent, input) {
             .selectAll("circle")
             .data(nodes)
             .enter().append("circle")
-            .attr("id", d => d.data.hash )
+            .attr("id", d => d.data.hash)
             .attr("fill", findColor)
             .attr("stroke", findColor)
             .attr('r', d => d.r)
@@ -176,34 +221,33 @@ async function createVisual(parent, input) {
                     amt = 0;
                     if (direction === "up" && d.data.hash !== currentRootHash) {
                         if (d.data.type === "folder") {
-                            let info = searchTree(tree, tree, d.data.hash);
-                            createVisual(info[0], info[1]);
-                        } else {
-                            if (d.parent.parent) {
-                                createVisual(d.parent.parent.data, d.parent.data);
-                            } else if (d.parent.data.hash !== currentRootHash) {
-                                createVisual(null, d.parent.data);
-                            }
+                            let info = searchTree(tree, d.data.hash);
+                            createVisual(info);
+                        } else if (d.parent) {
+                            createVisual(d.parent.data);
                         }
                     } else if (direction === "down" && currentRootHash !== currentMainHash) {
-                        let info = searchTree(null, tree, parent.hash);
-                        createVisual(info[0], info[1]);
+                        let parent = findParent(tree, currentRootHash, null);
+                        console.log(parent);
+                        let info = searchTree(tree, parent.hash);
+                        createVisual(info);
                     }
                 }
             })
-            .on("click", d => { 
-                if (focus !== d) { 
-                    zoom(d); 
+            .on("click", d => {
+                if (focus !== d) {
+                    updateInfo(d);
+                    zoom(d);
                     d3.event.stopPropagation();
                 } else {
                     zoom(root);
                 }
             })
-            .on("contextmenu", d => { 
-                addFrom(tree);
+            .on("contextmenu", d => {
+                console.log(d);
             })
-            .on("mousemove", showInfo)
-            .on("mouseout", hideInfo)
+            .on("mousemove", (node) => updatePath(tree, node))
+            .on("mouseout", hidePath)
 
 
         console.log(root)

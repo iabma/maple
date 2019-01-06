@@ -1,4 +1,4 @@
-const omit = [".git", ".DS_Store"]
+const blacklist = [".git", ".DS_Store"]
 
 function getLast(dir) {
     return dir.substring(dir.lastIndexOf('/') + 1);
@@ -15,20 +15,20 @@ function makeHash() {
     return hash;
 }
 
-var directoryTreeToObj = function(dir, done) {
+var directoryTreeToObj = (dir, done) => {
     var results = [];
 
-    fs.readdir(dir, function(err, list) {
+    fs.readdir(dir, (err, list) => {
         if (err) return done(err);
 
         var pending = list.length;
 
         if (!pending) return done(null, {name: path.basename(dir), children: results});
 
-        list.forEach(function(file) {
+        list.forEach((file) => {
             file = path.resolve(dir, file);
-            fs.stat(file, function(err, stat) {
-                if (!omit.includes(path.basename(file))) {
+            fs.stat(file, (err, stat) => {
+                if (!blacklist.includes(path.basename(file))) {
                     if (stat && stat.isDirectory()) {
                             directoryTreeToObj(file, async (err, res) => {
                                 if (err) return done(err);
@@ -41,6 +41,7 @@ var directoryTreeToObj = function(dir, done) {
                                         name: path.basename(file),
                                         type: "folder",
                                         size: size,
+                                        path: file,
                                         children: res
                                     });
 
@@ -54,6 +55,7 @@ var directoryTreeToObj = function(dir, done) {
                             name: path.basename(file),
                             type: "file",
                             size: stat.size,
+                            path: file,
                         });
                         if (!--pending) done(null, results);
                     }
@@ -68,24 +70,30 @@ var directoryTreeToObj = function(dir, done) {
 let currentMainHash, 
     writeComplete = false;
 
-directoryTreeToObj(mainDir, (err, data) => {
+directoryTreeToObj(mainDir, async (err, data) => {
     if(err) console.error(err);
 
     currentMainHash = makeHash();
 
-    let dirJSON = {
-        hash: currentMainHash,
-        name: getLast(mainDir),
-        type: "folder",
-        children: data
-    };
-
-    fs.writeFile(path.resolve(__dirname, "../js/dir.json"), JSON.stringify(dirJSON), (err) => {
+    await getSize(mainDir, (err, size) => {
         if (err) console.error(err);
 
-        writeComplete = true;
-        console.log("'dir.json' written.")
-    })
+        let dirJSON = {
+            hash: currentMainHash,
+            name: path.basename(mainDir),
+            type: "folder",
+            size: size,
+            path: mainDir,
+            children: data
+        };
+
+        fs.writeFile(path.resolve(__dirname, "../js/dir.json"), JSON.stringify(dirJSON), (err) => {
+            if (err) console.error(err);
+
+            writeComplete = true;
+            console.log("'dir.json' written.")
+        })
+    });
 });
 
 

@@ -7,6 +7,7 @@
         <title>maple</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+        <link rel="stylesheet" href="../fonts/fonts.css" />
         <link rel="stylesheet/less" href="../css/styles.less" />
         <script src="../js/less.js"></script>
         <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -20,9 +21,19 @@
 
         <svg id="container" width="960" height="960" ></svg>
 
-        <div id="directory"></div>
+        <div id="info">
+            <div id="stats">
+                <div class="text">
+                    INFO<br>
+                    name - Place<br>
+                    kind - folder<br>
+                    size - 1.3 GB<br>
+                </div>
+            </div>
+            <div id="specialized"></div>
+        </div>
 
-        <div id="tooltip"></div>
+        <div id="directory"></div>
 
         <script src="../js/modules.js"></script>
         <script src="../js/node-types.js"></script>
