@@ -16,7 +16,8 @@ body {
 .banner {
   z-index: 1;
   position: fixed;
-  top: -82px;
+  top: -88px;
+  right: -5px;
 }
 #version {
   z-index: 2;

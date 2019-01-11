@@ -1,7 +1,8 @@
 let currentRootHash,
     currentSelectedNode,
     width = document.getElementById("container").width.baseVal.value,
-    height = width;
+    height = width,
+    layered = false;
 
 const pack = d3.pack()
     .size([width - 4, width - 4])
@@ -93,6 +94,8 @@ function waitForData() {
         d3.json(path.resolve(__dirname, "../js/dir.json"), async (err, tree) => {
             if (err) console.error(err);
 
+            if (layered) getLayer(tree); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
+
             createVisual(tree);
             //timeline(tree, commits);
         });
@@ -160,6 +163,8 @@ async function updateInfo(tree, node) {
 function expand(tree, root, node) {
     searchTree(root, node.data.hash).children = searchTree(tree, node.data.hash).children;
 
+    if (layered) getLayer(searchTree(root, node.data.hash)); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
+
     createVisual(root);
 }
 
@@ -177,8 +182,6 @@ async function createVisual(input) {
 
         //document.getElementById("container").innerHTML = null;
 
-        //getLayer(input); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
-
         root = d3.hierarchy(input)
             .sum(d => Math.log(d.size))
             .sort((a, b) => b.value - a.value);
@@ -192,7 +195,11 @@ async function createVisual(input) {
         const svg = d3.select("#container")
             .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
             .on("click", () => {
-                if (document.getElementById("directory").innerHTML === "") createVisual(tree);
+                if (document.getElementById("directory").innerHTML === searchTree(tree, currentRootHash).path.split("/").join(" > ")) {
+                    if (layered) getLayer(info); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
+                    
+                    createVisual(tree);
+                }
             })
 
         const threshold = 25;
@@ -218,14 +225,23 @@ async function createVisual(input) {
                     if (direction === "up" && d.data.hash !== currentRootHash) {
                         if (d.data.type === "folder") {
                             let info = searchTree(tree, d.data.hash);
+
+                            if (layered) getLayer(info); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
+
                             createVisual(info);
                         } else if (d.parent) {
+
+                            if (layered) getLayer(d.parent.data); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
+
                             createVisual(d.parent.data);
                         }
                     } else if (direction === "down" && currentRootHash !== currentMainHash) {
                         let parent = findParent(tree, currentRootHash, null);
                         //console.log(parent);
                         let info = searchTree(tree, parent.hash);
+
+                        if (layered) getLayer(info); // * SUPER IMPORTANT: Uncommented - expanded, Commented - collapsed
+                        
                         createVisual(info);
                     }
                 }
@@ -247,7 +263,6 @@ async function createVisual(input) {
                     currentSelectedNode = d;
                     updateInfo(tree, d);
                 }
-                //console.log(d);
                 if (d.children) {
                     collapse(input, d);
                 } else if (d.data.type == "folder") {
