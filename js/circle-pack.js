@@ -154,6 +154,9 @@ async function updateInfo(tree, node) {
         /*item.append("i")
             .attr("class", "material-icons circle")
             .html("folder")*/
+        item.append("svg")
+            .append("circle")
+            .attr("viewbox", "-50 -50 100 100");
 
         item.append("p")
             .html(d => d.name + "<br>" + formatSize(d.size));
