@@ -2,3 +2,5 @@ node_modules
 less.js
 materialize.min.js
 jquery.textfill.min.js
+moment.min.js
+.DS_Store

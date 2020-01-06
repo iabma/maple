@@ -7,49 +7,50 @@ function getLast(dir) {
 function makeHash() {
     var hash = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
-  
+
     for (var i = 0; i < 15; i++) {
         hash += possible.charAt(Math.floor(Math.random() * possible.length));
     }
-  
+
     return hash;
 }
 
-var directoryTreeToObj = (dir, done) => {
+var directoryTreeToObj = async (dir, done) => {
     var results = [];
 
-    fs.readdir(dir, (err, list) => {
+    await fs.readdir(dir, (err, list) => {
         if (err) return done(err);
 
         var pending = list.length;
 
-        if (!pending) return done(null, {name: path.basename(dir), children: results});
+        if (!pending) return done(null, { name: path.basename(dir), children: results });
 
         list.forEach((file) => {
             file = path.resolve(dir, file);
             fs.stat(file, (err, stat) => {
                 if (!blacklist.includes(path.basename(file))) {
                     if (stat && stat.isDirectory()) {
-                            directoryTreeToObj(file, async (err, res) => {
+                        directoryTreeToObj(file, async (err, res) => {
+                            if (err) return done(err);
+
+                            await getSize(file, (err, size) => {
                                 if (err) return done(err);
-                                
-                                await getSize(file, (err, size) => {
-                                    if (err) return done(err);
 
-                                    results.push({
-                                        hash: makeHash(),
-                                        name: path.basename(file),
-                                        type: "folder",
-                                        size: size,
-                                        path: file,
-                                        children: res
-                                    });
-
-                                    if (!--pending) done(null, results);
+                                results.push({
+                                    hash: makeHash(),
+                                    name: path.basename(file),
+                                    type: "folder",
+                                    size: size,
+                                    path: file,
+                                    children: res
                                 });
+
+                                //console.log(pending - 1)
+                                if (!--pending)
+                                    done(null, results)
                             });
-                    }
-                    else {
+                        });
+                    } else {
                         results.push({
                             hash: makeHash(),
                             name: path.basename(file),
@@ -65,13 +66,16 @@ var directoryTreeToObj = (dir, done) => {
             });
         });
     });
+    done(null, results)
 };
 
-let currentMainHash, 
+let currentMainHash,
     writeComplete = false;
 
 directoryTreeToObj(mainDir, async (err, data) => {
-    if(err) console.error(err);
+    console.log("data")
+    if (err)
+        console.error(err);
 
     currentMainHash = makeHash();
 

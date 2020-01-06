@@ -46,21 +46,45 @@ textarea {
   padding-top: 10px;
   transition: .3s;
 }
+.title-bar .bar-info {
+  color: #ffa7a7;
+  position: absolute;
+  display: inline-block;
+  top: 10px;
+}
+.title-bar #time {
+  right: 70px;
+}
+.title-bar #wifi {
+  right: 40px;
+  font-size: 20px;
+}
+.title-bar #battery {
+  right: 40px;
+  font-size: 20px;
+}
 .child {
-  margin-top: 0vh;
-  height: 6vh;
+  -webkit-user-select: none;
+  margin: 5px 0px;
+  padding: 0px 4px;
+  height: fit-content;
+  border: 0px solid #1a1919;
   border-radius: 5px;
   background-color: #1a1919;
   font-size: 2vh;
+  transition: 0.3s cubic-bezier(0.29, 0.87, 0.7, 1.02);
 }
-.text {
-  margin-left: 5px;
-  margin-top: 5px;
-  width: calc(90%);
-  height: calc(90%);
-  color: #ffa7a7;
-  font-family: "Roboto", sans-serif;
-  font-size: 2vh;
+.child i {
+  margin: 0px 10px;
+  padding: 3px;
+  border: 1px solid #ffa7a7;
+}
+.child p {
+  display: inline-block;
+}
+.child:hover {
+  border-width: 5px 0px;
+  transition: 0.3s cubic-bezier(0.29, 0.87, 0.7, 1.02);
 }
 /* .preview {
 	margin-left: 5px;
@@ -110,16 +134,27 @@ textarea {
   color: #ffa7a7;
   position: absolute;
   width: calc(-5%);
-  height: 90vh;
+  height: 89vh;
   right: 5vh;
-  margin-top: -90vh;
+  margin-top: -89vh;
 }
 #info #stats {
+  font-family: "Roboto", sans-serif;
+  font-size: 2vh;
   width: 100%;
-  height: 13.5%;
+  height: fit-content;
   border-radius: 5px;
+  border: 1px solid #ffa7a7;
   background-color: #1a1919;
   color: #ffa7a7;
+}
+#info #stats i {
+  margin: 0px 10px;
+  padding: 3px;
+  border: 1px solid #ffa7a7;
+}
+#info #stats p {
+  display: inline-block;
 }
 #info #specialized {
   width: 100%;
@@ -131,9 +166,10 @@ textarea {
 }
 circle {
   stroke-width: 0px;
+  stroke-dasharray: 2, 2;
   transition: 0.5s cubic-bezier(0.29, 0.87, 0.7, 1.02);
 }
 circle:hover {
-  stroke-width: 10px;
+  stroke-width: 5px;
   transition: 0.3s cubic-bezier(0.29, 0.87, 0.7, 1.02);
 }

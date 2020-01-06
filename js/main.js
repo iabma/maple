@@ -27,7 +27,7 @@ function createStartWindow() {
     });
 
     start.loadURL(url.format({
-        pathname: path.join(__dirname, "./html/start.html"),
+        pathname: path.join(__dirname, "../html/start.html"),
         protocol: "file",
         slashes: true
     }));
@@ -39,12 +39,14 @@ function createStartWindow() {
 
 function createMainWindow() {
     main = new BrowserWindow({
+        width: 900,
+        height: 600,
         hasShadow: false,
         frame: false
     });
 
     main.loadURL(url.format({
-        pathname: path.join(__dirname, "./html/index.html"),
+        pathname: path.join(__dirname, "../html/index.html"),
         protocol: "file",
         slashes: true
     }));
@@ -74,10 +76,8 @@ function fadeStart() {
 
 ipcMain.on("openDir", () => {
     dir = dialog.showOpenDialog(start, { properties: ['openDirectory'] });
-    if (!dir) { 
-        console.log("No selected directory.");
-        return; 
-    }
+    if (!dir)
+        console.error("No selected directory.")
 
     fadeStart();
     setTimeout(switchToMain, 500);
