@@ -16,7 +16,7 @@
         "jquery": "^3.3.1",
         "less": "^3.9.0",
         "materialize-css": "^1.0.0-rc.2",
-        "simple-git": "^1.107.0",
+        "simple-git": "^3.5.0",
         "xmlhttprequest": "^1.8.0"
     }
 }
